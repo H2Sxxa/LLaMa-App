@@ -9,10 +9,9 @@ class LocalChatableModel extends ChatableModel {
   void chat(Function(String result, bool status) callback,
       [List<llamapp.Message>? messages]) {
     final request = OpenAiRequest(
-      modelPath:
-          "D:/WorkSpace/dart/llamapp/TinyLlama_v1.1_chinese.i1-IQ1_S.gguf",
+      modelPath: "tinyllama-1.1b-chat-v1.0.Q2_K.gguf",
+      temperature: 1,
       messages: messages?.map((e) => e.convert()).toList() ?? [],
-      
     );
     fllamaChat(request, callback);
   }

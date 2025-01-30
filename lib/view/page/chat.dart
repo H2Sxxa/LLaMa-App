@@ -13,6 +13,7 @@ class ChatPage extends StatefulWidget {
 
 class _ChatPageState extends State<ChatPage> {
   late final ChatableModel model;
+  String result = "";
   @override
   void initState() {
     super.initState();
@@ -22,10 +23,9 @@ class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
     final messages = [
-      Message(
-          content: "Hi, I am TinyLlama_v1.1_chinese.i1-IQ1_S.",
-          source: MessageSource.ai),
-      Message(content: "Hi, I am a user", source: MessageSource.user)
+      Message(content: 'You are a chatbot.', source: MessageSource.system),
+      Message(content: "Hi, I am a user", source: MessageSource.user),
+      if (result.isNotEmpty) Message(content: result, source: MessageSource.ai),
     ];
     final colorScheme = Theme.of(context).colorScheme;
     return Stack(
@@ -55,8 +55,12 @@ class _ChatPageState extends State<ChatPage> {
                     child: IconButton.filled(
                       color: colorScheme.surfaceContainerLowest,
                       onPressed: () {
-                        model.chat((text, status) {
-                          print(text);
+                        model.chat((text, done) {
+                          setState(() {
+                            if (!done) {
+                              result = text;
+                            }
+                          });
                         }, messages);
                       },
                       icon: Icon(Icons.arrow_upward),
