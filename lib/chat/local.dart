@@ -10,7 +10,6 @@ class LocalChatableModel extends ChatableModel {
       [List<llamapp.Message>? messages]) {
     final request = OpenAiRequest(
       modelPath: "tinyllama-1.1b-chat-v1.0.Q2_K.gguf",
-      temperature: 1,
       messages: messages?.map((e) => e.convert()).toList() ?? [],
     );
     fllamaChat(request, callback);

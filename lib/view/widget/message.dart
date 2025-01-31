@@ -11,28 +11,38 @@ class MessageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isUser = message.source == MessageSource.user;
+    final isSystem = message.source == MessageSource.system;
 
-    final content = Text(
+    final content = SelectableText(
       message.content,
-      style: DefaultTextStyle.of(context).style.copyWith(fontSize: 16),
+      style: DefaultTextStyle.of(context)
+          .style
+          .copyWith(fontSize: 16, color: isSystem ? Colors.grey : null),
     );
     final screenWidth = MediaQuery.of(context).size.width;
-    return Container(
-      alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
-      constraints: BoxConstraints(maxWidth: screenWidth * 0.7),
-      child: isUser
-          ? Card(
-              child: Padding(
-                padding: EdgeInsets.all(8),
-                child: content,
-              ),
-            )
-          : Card.outlined(
-              child: Padding(
-                padding: EdgeInsets.all(8),
-                child: content,
-              ),
-            ),
+    return UnconstrainedBox(
+      alignment: isSystem
+          ? Alignment.center
+          : isUser
+              ? Alignment.centerRight
+              : Alignment.centerLeft,
+      child: Container(
+        constraints: BoxConstraints(maxWidth: screenWidth * 0.8),
+        padding: EdgeInsets.symmetric(vertical: 8),
+        child: isSystem
+            ? content
+            : isUser
+                ? Card(
+                    child: Padding(
+                      padding: EdgeInsets.all(8),
+                      child: content,
+                    ),
+                  )
+                : Padding(
+                    padding: EdgeInsets.all(8),
+                    child: content,
+                  ),
+      ),
     );
   }
 }
