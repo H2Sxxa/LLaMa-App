@@ -1,17 +1,29 @@
 import 'package:llamapp/chat/common.dart';
 import 'package:fllama/fllama.dart';
-import 'package:llamapp/model/message.dart' as llamapp;
+import 'package:llamapp/chat/fllama.dart';
+import 'package:llamapp/func/disposable.dart';
+import 'package:llamapp/model/message.dart' as app;
+
+DisposableValue<Function>? _request;
 
 class LocalChatableModel extends ChatableModel {
-  const LocalChatableModel();
+  /// Only GGUF Support Now
+  final String modelPath;
+  const LocalChatableModel({required this.modelPath});
 
   @override
   void chat(Function(String result, bool status) callback,
-      [List<llamapp.Message>? messages]) {
+      [List<app.Message>? messages]) async {
     final request = OpenAiRequest(
-      modelPath: "tinyllama-1.1b-chat-v1.0.Q2_K.gguf",
+      modelPath: modelPath,
       messages: messages?.map((e) => e.convert()).toList() ?? [],
     );
-    fllamaChat(request, callback);
+    final requestId = await fllamaChat(request, callback);
+    _request = disposableValue(() => fllamaCancelInference(requestId));
+  }
+
+  @override
+  void cancel() {
+    _request?.call()?.call();
   }
 }

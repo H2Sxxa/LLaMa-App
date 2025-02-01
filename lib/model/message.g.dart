@@ -18,6 +18,6 @@ Map<String, dynamic> _$MessageToJson(Message instance) => <String, dynamic>{
 
 const _$MessageSourceEnumMap = {
   MessageSource.user: 'user',
-  MessageSource.ai: 'ai',
+  MessageSource.assistant: 'assistant',
   MessageSource.system: 'system',
 };

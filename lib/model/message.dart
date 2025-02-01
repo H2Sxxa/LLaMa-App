@@ -19,7 +19,7 @@ class Message {
 
   fllama.Message convert() {
     switch (source) {
-      case MessageSource.ai:
+      case MessageSource.assistant:
         return fllama.Message(Role.assistant, content);
       case MessageSource.system:
         return fllama.Message(Role.system, content);
@@ -34,6 +34,6 @@ class Message {
 @JsonEnum()
 enum MessageSource {
   user,
-  ai,
+  assistant,
   system,
 }

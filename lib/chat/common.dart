@@ -6,4 +6,5 @@ abstract class ChatableModel {
   const ChatableModel();
   void chat(Function(String result, bool status) callback,
       [List<Message>? messages]);
+  void cancel();
 }
